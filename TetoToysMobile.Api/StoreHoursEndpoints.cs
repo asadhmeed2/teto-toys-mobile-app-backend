@@ -85,14 +85,19 @@ public static class StoreHoursEndpoints
     {
         localNow = ResolveNow(timeZoneId, out timeZoneResolved);
 
+        // Copied to a local first: an out parameter cannot be captured by the lambda
+        // below (CS1628), since the compiler can't guarantee its lifetime.
         // .NET DayOfWeek already maps Sunday = 0 .. Saturday = 6.
-        var row = days.Find(d => d.DayOfWeek == (int)localNow.DayOfWeek);
+        var today = (int)localNow.DayOfWeek;
+        var timeOfDay = localNow.TimeOfDay;
+
+        var row = days.Find(d => d.DayOfWeek == today);
 
         if (row == null || row.IsClosed) return false;
         if (!TryParseTime(row.OpenTime, out var open)) return false;
         if (!TryParseTime(row.CloseTime, out var close)) return false;
 
-        var now = localNow.TimeOfDay;
+        var now = timeOfDay;
         return now >= open && now < close;
     }
 
