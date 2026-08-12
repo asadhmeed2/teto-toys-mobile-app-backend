@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "8dm+xeE8voU=",
+  "success": true,
+  "projectFilePath": "c:\\Users\\user\\Desktop\\projects\\teto-toys-workspace\\teto-toys-mobile-app-backend\\TetoToysMobile.Application\\TetoToysMobile.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.9\\microsoft.extensions.configuration.abstractions.10.0.9.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.9\\microsoft.extensions.dependencyinjection.abstractions.10.0.9.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.9\\microsoft.extensions.primitives.10.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
