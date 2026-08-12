@@ -1,0 +1,40 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetoToysMobile.Domain", "TetoToysMobile.Domain\TetoToysMobile.Domain.csproj", "{C30DF16E-3A53-4F3C-A1EA-493DAC05CBE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetoToysMobile.Application", "TetoToysMobile.Application\TetoToysMobile.Application.csproj", "{C16C48DF-0AA3-4EEE-9DE3-6134900198D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetoToysMobile.Infrastructure", "TetoToysMobile.Infrastructure\TetoToysMobile.Infrastructure.csproj", "{2D206F05-9A41-4C49-9EBB-4A6B976D997C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetoToysMobile.Api", "TetoToysMobile.Api\TetoToysMobile.Api.csproj", "{5288FD90-7CD7-4482-98AE-780852F3AA0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C30DF16E-3A53-4F3C-A1EA-493DAC05CBE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30DF16E-3A53-4F3C-A1EA-493DAC05CBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30DF16E-3A53-4F3C-A1EA-493DAC05CBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30DF16E-3A53-4F3C-A1EA-493DAC05CBE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C16C48DF-0AA3-4EEE-9DE3-6134900198D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C16C48DF-0AA3-4EEE-9DE3-6134900198D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C16C48DF-0AA3-4EEE-9DE3-6134900198D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C16C48DF-0AA3-4EEE-9DE3-6134900198D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D206F05-9A41-4C49-9EBB-4A6B976D997C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D206F05-9A41-4C49-9EBB-4A6B976D997C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D206F05-9A41-4C49-9EBB-4A6B976D997C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D206F05-9A41-4C49-9EBB-4A6B976D997C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5288FD90-7CD7-4482-98AE-780852F3AA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5288FD90-7CD7-4482-98AE-780852F3AA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5288FD90-7CD7-4482-98AE-780852F3AA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5288FD90-7CD7-4482-98AE-780852F3AA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

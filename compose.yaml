@@ -1,0 +1,26 @@
+services:
+  mobile-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    env_file:
+      - TetoToysMobile.Api/.env
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8082"
+      # Native clients ignore CORS; this is for a browser dev client or WebView shell.
+      CorsOrigins: ${CorsOrigins:-http://localhost:4200}
+      Redis__Host: shared_redis
+      Redis__Port: ${Redis__Port:-6379}
+      MySQL__Server: shared_mysql
+    # 8080 (storefront) and 8081 (admin) are taken.
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    networks:
+      - infrastructure_network
+
+networks:
+  infrastructure_network:
+    external: true
