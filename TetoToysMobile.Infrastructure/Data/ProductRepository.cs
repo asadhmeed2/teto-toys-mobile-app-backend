@@ -77,7 +77,47 @@ public class ProductRepository : IProductRepository
             }
         }
 
+        await AttachPartIdsAsync(conn, items);
+
         return (items, totalCount);
+    }
+
+    /// <summary>
+    /// Loads part ids for an already-fetched page in one extra round trip.
+    ///
+    /// Deliberately not GROUP_CONCAT in the main query: group_concat_max_len defaults
+    /// to 1024 bytes, so with 36-character GUIDs a product with more than ~27 parts
+    /// would have its list silently truncated. This also keeps the page query free of
+    /// GROUP BY, which interacts badly with ONLY_FULL_GROUP_BY and the translation joins.
+    /// </summary>
+    private static async Task AttachPartIdsAsync(MySqlConnection conn, List<Product> products)
+    {
+        if (products.Count == 0) return;
+
+        // Parameterised IN list — ids come from the database, but never inline values.
+        var parameterNames = products.Select((_, i) => $"@id{i}").ToArray();
+        var sql = $@"
+            SELECT product_id, part_id
+            FROM product_parts
+            WHERE product_id IN ({string.Join(", ", parameterNames)})";
+
+        await using var cmd = new MySqlCommand(sql, conn);
+        for (var i = 0; i < products.Count; i++)
+        {
+            cmd.Parameters.AddWithValue(parameterNames[i], products[i].ProductId);
+        }
+
+        var byProduct = products.ToDictionary(p => p.ProductId, p => p);
+
+        await using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            var productId = reader.GetIdString("product_id");
+            if (byProduct.TryGetValue(productId, out var product))
+            {
+                product.PartIds.Add(reader.GetIdString("part_id"));
+            }
+        }
     }
 
     private static void BindFilters(MySqlCommand cmd, string? search, int? categoryId, string language)
@@ -104,8 +144,19 @@ public class ProductRepository : IProductRepository
         cmd.Parameters.AddWithValue("@productId", productId);
         cmd.Parameters.AddWithValue("@language", language);
 
-        await using var reader = await cmd.ExecuteReaderAsync();
-        return await reader.ReadAsync() ? MapProduct(reader) : null;
+        Product? product;
+        await using (var reader = await cmd.ExecuteReaderAsync())
+        {
+            product = await reader.ReadAsync() ? MapProduct(reader) : null;
+        }
+
+        // Reader must be closed before reusing the connection for the parts query.
+        if (product != null)
+        {
+            await AttachPartIdsAsync(conn, new List<Product> { product });
+        }
+
+        return product;
     }
 
     public async Task<List<Category>> GetCategoriesAsync(string language = "en")
