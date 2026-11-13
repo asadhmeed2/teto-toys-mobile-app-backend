@@ -37,6 +37,13 @@ public sealed class SecurityHeadersMiddleware
         // Legacy header, but harmless and still honoured by some older browsers.
         headers["X-Permitted-Cross-Domain-Policies"] = "none";
 
+        // JSON never needs to load anything or be framed; also neuters any HTML error page.
+        headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'";
+        headers["Cross-Origin-Resource-Policy"] = "same-site";
+
+        // Responses carry tokens and per-user data; no browser or proxy may cache them.
+        headers["Cache-Control"] = "no-store";
+
         return _next(context);
     }
 }

@@ -10,6 +10,13 @@ Env.Load(options: new LoadOptions(setEnvVars: true, clobberExistingVars: false))
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Don't advertise the stack ("Server: Kestrel").
+builder.WebHost.ConfigureKestrel(o => o.AddServerHeader = false);
+
+// Central error handling: unhandled exceptions and empty 4xx bodies (bad JSON, unknown
+// route, wrong method) become RFC 7807 JSON instead of an empty response.
+builder.Services.AddProblemDetails();
+
 builder.Services.AddOpenApi();
 
 // CORS matters far less here than for the web apps — native clients aren't bound by
@@ -49,6 +56,8 @@ if (string.IsNullOrEmpty(app.Configuration["JWT:SECRET"]))
 
 // First in the pipeline so even short-circuited responses (429s) carry the headers.
 app.UseSecurityHeaders();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 if (!app.Environment.IsDevelopment())
 {
