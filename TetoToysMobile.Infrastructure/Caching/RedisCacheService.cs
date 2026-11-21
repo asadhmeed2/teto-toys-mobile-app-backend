@@ -12,9 +12,11 @@ public class RedisCacheService : IRedisCacheService
         _multiplexer = multiplexer;
     }
 
-    // Key format shared with the other backends: the key IS the token, so its
-    // presence proves this platform issued it and it hasn't been revoked.
-    private static string RefreshKey(string token) => $"refresh:{token}";
+    // Key format shared with the other backends: the key is the token's SHA-256, so its
+    // presence proves this platform issued it and it hasn't been revoked, while a Redis
+    // read/dump yields no usable session.
+    private static string RefreshKey(string token) =>
+        $"refresh:{Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(token)))}";
 
     public async Task SetRefreshTokenAsync(string token, TimeSpan ttl) =>
         await _multiplexer.GetDatabase().StringSetAsync(RefreshKey(token), "1", ttl);

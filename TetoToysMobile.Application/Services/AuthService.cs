@@ -42,6 +42,10 @@ public class AuthService : IAuthService
         if (request.Password.Length < MinPasswordLength)
             return AuthResult.Fail("invalid_request", $"Password must be at least {MinPasswordLength} characters.", 400);
 
+        // bcrypt ignores bytes past 72; reject instead of silently truncating.
+        if (System.Text.Encoding.UTF8.GetByteCount(request.Password) > 72)
+            return AuthResult.Fail("invalid_request", "Password must be at most 72 bytes.", 400);
+
         if (!request.IsAdult)
             return AuthResult.Fail("invalid_request", "You must confirm that you are 18 years or older.", 400);
 
